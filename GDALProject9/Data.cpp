@@ -83,20 +83,17 @@ vector<Pixel> loadImage(Data& Img)
 	return pl;
 }
 
-// 样本均值 及各类别样本数量
-tuple<vector<Pixel>, int, int, int, int, int> getMeans(vector<Pixel> train, vector<Pixel> Label)
+// 样本均值、协方差、先验概率
+tuple<vector<Vector3d>, vector<Matrix3d>, vector<double> > getMeans(vector<Pixel> train, vector<Pixel> Label)
 {
-	int mark = 0; int k0 = 0; int k50 = 0; int k100 = 0; int k150 = 0; int k200 = 0;
+	vector<Pixel> meanPixels(5);
+	int mark = 0; int k0 = 0; int k1 = 0; int k2 = 0; int k3 = 0; int k4 = 0;
 
 	double sumR0 = 0;	double sumG0 = 0;	double sumB0 = 0;
 	double sumR50 = 0;	double sumG50 = 0;	double sumB50 = 0;
 	double sumR100 = 0;	double sumG100 = 0;	double sumB100 = 0;
 	double sumR150 = 0;	double sumG150 = 0;	double sumB150 = 0;
 	double sumR200 = 0;	double sumG200 = 0;	double sumB200 = 0;
-
-	double r0mean, r50mean, r100mean, r150mean, r200mean;
-	double g0mean, g50mean, g100mean, g150mean, g200mean;
-	double b0mean, b50mean, b100mean, b150mean, b200mean;
 
 	for (int i = 0; i < Height; i++)
 	{
@@ -115,65 +112,55 @@ tuple<vector<Pixel>, int, int, int, int, int> getMeans(vector<Pixel> train, vect
 				sumR50 += train[mark].r;
 				sumG50 += train[mark].g;
 				sumB50 += train[mark].b;
-				k50++;
+				k1++;
 			}
 			else if (Label[mark].r == 100)
 			{
 				sumR100 += train[mark].r;
 				sumG100 += train[mark].g;
 				sumB100 += train[mark].b;
-				k100++;
+				k2++;
 			}
 			else if (Label[mark].r == 150)
 			{
 				sumR150 += train[mark].r;
 				sumG150 += train[mark].g;
 				sumB150 += train[mark].b;
-				k150++;
+				k3++;
 			}
 			else
 			{
 				sumR200 += train[mark].r;
 				sumG200 += train[mark].g;
 				sumB200 += train[mark].b;
-				k200++;
+				k4++;
 			}
 		}
 	}
-	r0mean = sumR0 / k0; g0mean = sumG0 / k0; b0mean = sumB0 / k0;
-	r50mean = sumR50 / k50; g50mean = sumG50 / k50; b50mean = sumB50 / k50;
-	r100mean = sumR100 / k100; g100mean = sumG100 / k100; b100mean = sumB100 / k100;
-	r150mean = sumR150 / k150; g150mean = sumG150 / k150; b150mean = sumB150 / k150;
-	r200mean = sumR200 / k200; g200mean = sumG200 / k200; b200mean = sumB200 / k200;
 
-	vector<Pixel> meanPixels(5);
-	meanPixels[0].r = r0mean; meanPixels[0].g = g0mean;	meanPixels[0].b = b0mean;
-	meanPixels[1].r = r50mean; meanPixels[1].g = g50mean;	meanPixels[1].b = b50mean;
-	meanPixels[2].r = r100mean; meanPixels[2].g = g100mean;	meanPixels[2].b = b100mean;
-	meanPixels[3].r = r150mean; meanPixels[3].g = g150mean;	meanPixels[3].b = b150mean;
-	meanPixels[4].r = r200mean; meanPixels[4].g = g200mean;	meanPixels[4].b = b200mean;
+	vector<double> probability(5);
+	probability[0] = (double)k0 / train.size();
+	probability[1] = (double)k1 / train.size();
+	probability[2] = (double)k2 / train.size();
+	probability[3] = (double)k3 / train.size();
+	probability[4] = (double)k4 / train.size();
 
-	// meanPixels vector从0到4分别对应0、50、100、150、200
-	return make_tuple(meanPixels, k0, k50, k100, k150, k200);
-}
+	meanPixels[0].r = sumR0 / k0; meanPixels[0].g = sumG0 / k0;	meanPixels[0].b = sumB0 / k0;
+	meanPixels[1].r = sumR50 / k1; meanPixels[1].g = sumG50 / k1; meanPixels[1].b = sumB50 / k1;
+	meanPixels[2].r = sumR100 / k2; meanPixels[2].g = sumG100 / k2;	meanPixels[2].b = sumB100 / k2;
+	meanPixels[3].r = sumR150 / k3; meanPixels[3].g = sumG150 / k3;	meanPixels[3].b = sumB150 / k3;
+	meanPixels[4].r = sumR200 / k4;  meanPixels[4].g = sumG200 / k4; meanPixels[4].b = sumB200 / k4;
 
-// 样本方差
-vector<Pixel> Variance(vector<Pixel> train, vector<Pixel> Label)
-{
-	// 利用tie进行解包元素的值
-	// 定义接受变量
-	vector<Pixel> means; // 求方差需要用均值
-	int a0, a50, a100, a150, a200; // 各样本数量
-	tie(means, a0, a50, a100, a150, a200) = getMeans(train, Label);
+	vector<Vector3d> means;
+	for (int i = 0; i < meanPixels.size(); i++)
+	{
+		Vector3d temp = Pix2Vec(meanPixels[i]);
+		means.push_back(temp);
+	}
 
-	double sumR0 = 0;	double sumG0 = 0;	double sumB0 = 0;
-	double sumR50 = 0;	double sumG50 = 0;	double sumB50 = 0;
-	double sumR100 = 0;	double sumG100 = 0;	double sumB100 = 0;
-	double sumR150 = 0;	double sumG150 = 0;	double sumB150 = 0;
-	double sumR200 = 0;	double sumG200 = 0;	double sumB200 = 0;
-	
-	// 求方差
-	int mark = 0;
+	MatrixXd cov0(k0, 3);	MatrixXd cov1(k1, 3);	MatrixXd cov2(k2, 3);	MatrixXd cov3(k3, 3);	MatrixXd cov4(k4, 3);
+	int a0 = 0; int a1 = 0; int a2 = 0; int a3 = 0; int a4 = 0;
+
 	for (int i = 0; i < Height; i++)
 	{
 		for (int j = 0; j < Width; j++)
@@ -181,112 +168,62 @@ vector<Pixel> Variance(vector<Pixel> train, vector<Pixel> Label)
 			mark = i * Width + j;
 			if (Label[mark].r == 0)
 			{
-				sumR0 += train[mark].r * train[mark].r;
-				sumG0 += train[mark].g * train[mark].g;
-				sumB0 += train[mark].b * train[mark].b;
+				cov0(a0, 0) = train[mark].r - meanPixels[0].r;
+				cov0(a0, 1) = train[mark].g - meanPixels[0].g;
+				cov0(a0, 2) = train[mark].b - meanPixels[0].b;
+				a0++;
 			}
 			else if (Label[mark].r == 50)
 			{
-				sumR50 += train[mark].r * train[mark].r;
-				sumG50 += train[mark].g * train[mark].g;
-				sumB50 += train[mark].b * train[mark].b;
+				cov1(a1, 0) = train[mark].r - meanPixels[1].r;
+				cov1(a1, 1) = train[mark].g - meanPixels[1].g;
+				cov1(a1, 2) = train[mark].b - meanPixels[1].b;
+				a1++;
 			}
 			else if (Label[mark].r == 100)
 			{
-				sumR100 += train[mark].r * train[mark].r;
-				sumG100 += train[mark].g * train[mark].g;
-				sumB100 += train[mark].b * train[mark].b;
+				cov2(a2, 0) = train[mark].r - meanPixels[2].r;
+				cout << cov2(a2, 0) << endl;
+				cov2(a2, 1) = train[mark].g - meanPixels[2].g;
+				cov2(a2, 2) = train[mark].b - meanPixels[2].b;
+				a2++;
 			}
 			else if (Label[mark].r == 150)
 			{
-				sumR150 += train[mark].r * train[mark].r;
-				sumG150 += train[mark].g * train[mark].g;
-				sumB150 += train[mark].b * train[mark].g;
+				cov3(a3, 0) = train[mark].r - meanPixels[3].r;
+				cov3(a3, 1) = train[mark].g - meanPixels[3].g;
+				cov3(a3, 2) = train[mark].b - meanPixels[3].b;
+				a3++;
 			}
 			else
 			{
-				sumR200 += train[mark].r * train[mark].r;
-				sumG200 += train[mark].g * train[mark].g;
-				sumB200 += train[mark].b * train[mark].b;
+				cov4(a4, 0) = train[mark].r - meanPixels[4].r;
+				cov4(a4, 1) = train[mark].g - meanPixels[4].g;
+				cov4(a4, 2) = train[mark].b - meanPixels[4].b;
+				a4++;
 			}
 		}
 	}
 
-	vector<Pixel> axx(5);
-	axx[0].r = sumR0 / a0; axx[0].g = sumG0 / a0; axx[0].b = sumB0 / a0;
-	axx[1].r = sumR50 / a50; axx[1].g = sumG50 / a50; axx[1].b = sumB50 / a50;
-	axx[2].r = sumR100 / a100; axx[2].g = sumG100 / a100; axx[2].b = sumB100 / a100;
-	axx[3].r = sumR150 / a150; axx[3].g = sumG150 / a150; axx[3].b = sumB150 / a150;
-	axx[4].r = sumR200 / a200; axx[4].g = sumG200 / a200; axx[4].b = sumB200 / a200;
+	Matrix3d Cov0 = cov0.transpose() * cov0 * 0.5;
+	Matrix3d Cov1 = cov1.transpose() * cov1 * 0.5;
+	Matrix3d Cov2 = cov2.transpose() * cov2 * 0.5;
+	Matrix3d Cov3 = cov3.transpose() * cov3 * 0.5;
+	Matrix3d Cov4 = cov4.transpose() * cov4 * 0.5;
+	
+	vector<Matrix3d> Cov(5);
+	Cov[0] = Cov0;
+	Cov[1] = Cov1;
+	Cov[2] = Cov2;
+	Cov[3] = Cov3;
+	Cov[4] = Cov4;
 
-	vector<Pixel> Var;
-	for (int i = 0; i < 5; i++)
-	{
-		Pixel pl;
-		pl.r = axx[i].r - means[i].r * means[i].r;
-		pl.g = axx[i].g - means[i].g * means[i].g;
-		pl.b = axx[i].b - means[i].b * means[i].b;
-		Var.push_back(pl);
-	}
-
-	return Var;
+	// vector从0到4分别对应0、50、100、150、200
+	return make_tuple(means, Cov, probability);
 }
 
-// 最小距离分类
-int minDistClassify(vector<Pixel> meanPix, int trainLabels[], int numTrain, Pixel testPix)
-{
-	double minDist = INT_MAX;
-	unsigned int predLabel;
 
-	for (int i = 0; i < numTrain; ++i) 
-	{
-		// 这里应该是与各个均值中心之间的距离
-		double dist = caldistance(testPix, meanPix[i]);
 
-		if (dist < minDist) 
-		{
-			minDist = dist;
-			predLabel = trainLabels[i];
-		}
-	}
-	// 预测类别
-	return predLabel;
-}
-
-// 样本数量获取，求得概率 P_Yi
-vector<double> getProbability(vector<Pixel> train, vector<Pixel> Label)
-{
-	int mark = 0; int num0 = 0; int num50 = 0; int num100 = 0; int num150 = 0; int num200 = 0;
-	vector<double> probbly(5);
-
-	for (int i = 0; i < Width * Height; i++)
-	{
-		if (Label[i].r == 0)
-		{
-			num0 += 1;
-		}
-		else if (Label[i].r == 50)
-		{
-			num50 += 1;
-		}
-		else if (Label[i].r == 100)
-		{
-			num100 += 1;
-		}
-		else if (Label[i].r == 150)
-		{
-			num150 += 1;
-		}
-		else
-		{
-			num200 += 1;
-		}
-	}
-	mark = Width * Height;
-	probbly[0] = (double)num0 / mark;probbly[1] = (double)num50 / mark; probbly[2] = (double)num100 / mark; probbly[3] = (double)num150 / mark; probbly[4] = (double)num200 / mark;
-
-	return probbly;
-}
 
 // 高斯概率密度计算
 double gaussProDen(double means, double var, double x)
@@ -296,95 +233,265 @@ double gaussProDen(double means, double var, double x)
 	return result;
 }
 
-// 最大似然法分类
-int maxLikelihoodClassify(vector<double> probbly,vector<Pixel> means, vector<Pixel> Var, int trainLabels[], int numTrain, Pixel testPix)
+// 多元高斯概率密度计算
+double testgauss(VectorXd mean, MatrixXd cov, VectorXd test)
 {
+	int k = mean.size();
+
+	double determinant = cov.determinant();
+	double normalization = 1.0 / (pow(2 * M_PI, k / 2) * sqrt(determinant));
+
+	MatrixXd inv_cov = cov.inverse();
+	double exponent = -0.5 * (test - mean).transpose() * inv_cov * (test - mean);
+	return normalization * exp(exponent);
+
+}
+
+// 像素到向量的转换
+Vector3d Pix2Vec(Pixel a)
+{
+	VectorXd V(3);
+	V << a.r, a.g, a.b;
+	return V;
+}
+
+// 最大似然法测试
+int testMax(vector<double> probbly, vector<Vector3d> means, vector<Matrix3d> cov, int trainLabels[], int numTrain, Pixel testPix)
+{
+	Vector3d tePix = Pix2Vec(testPix);
+
 	int maxId = 0;
 	double maxProb = 0;
 
 	for (int i = 0; i < numTrain; i++)
 	{
-		double mean_r = means[i].r;
-		double mean_g = means[i].g;
-		double mean_b = means[i].b;
-		double var_r = Var[i].r;
-		double var_g = Var[i].g;
-		double var_b = Var[i].b;
-
-		double prob_r = gaussProDen(mean_r, var_r, testPix.r);
-		double prob_g = gaussProDen(mean_g, var_g, testPix.g);
-		double prob_b = gaussProDen(mean_b, var_b, testPix.b);
-		//double prob = sqrt(prob_r * prob_r + prob_g * prob_g + prob_b * prob_b) * probbly[i];
-		double prob = prob_r * prob_g * prob_b * probbly[i];
+		double prob = testgauss(means[i], cov[i], tePix) * probbly[i];
 		if (prob > maxProb)
 		{
 			maxProb = prob;
 			maxId = trainLabels[i];
 		}
-
 	}
 	return maxId;
 }
 
-//均值滤波
-int* meanFilter(int *Input)
+// 最小距离分类
+int minDistClassify(vector<Pixel> meanPix, int trainLabels[], int numTrain, Pixel testPix)
 {
-	//申请内存 一个波段
-	int* Output = new int[Width * Height];
+	double minDist = INT_MAX;
+	unsigned int predLabel;
 
-	for (int i = 0; i < Height; i++) {
-		for (int j = 0; j < Width; j++) {
-			if (i == 0 || j == 0 || i == Height - 1 || j == Width - 1) {
-				Output[Width * i + j] = Input[Width * i + j];
-			}
+	for (int i = 0; i < numTrain; ++i)
+	{
+		// 这里应该是与各个均值中心之间的距离
+		double dist = caldistance(testPix, meanPix[i]);
+
+		if (dist < minDist)
+		{
+			minDist = dist;
+			predLabel = trainLabels[i];
 		}
 	}
-
-	int temp[9] = { 0 };//3*3的
-	for (int i = 1; i < Height - 1; i++) {
-		for (int j = 1; j < Width - 1; j++) {
-			for (int k = 0; k < 9; k++) {
-				*(temp + k) = Input[Width * (i + k / 3) + j + k % 3];
-			}
-			int sum = 0;
-			for (int t = 0; t < 9; t++) {
-				sum += *(temp + t);
-			}
-
-			Output[Width * i + j] = sum / 9;
-		}
-	}
-	return Output;
+	// 预测类别
+	return predLabel;
 }
 
-// 中值滤波
-int* medianFilter(int* Input)
+//精度评定
+void EvaAccuracy(Data& ref, Data& res)
 {
+	//reference
+	GDALDataType ref_type = ref.getDatatype(); //GDT_UInt16 对应 unsigned short
+	GDALDataset* ref_Dataset = ref.getDataset();
+	int ref_Xsize = ref.getXsize();
+	int ref_Ysize = ref.getYsize();
+	// int ref_Bandnum = ref.getBandnum();
+	//result
+	GDALDataType res_type = res.getDatatype();
+	GDALDataset* res_Dataset = res.getDataset();
+	int res_Xsize = res.getXsize();
+	int res_Ysize = res.getYsize();
+	// int res_Bandnum = res.getBandnum();
 
-	int* Output = new int[Width * Height];
+	GDALRasterBand* refBand = ref_Dataset->GetRasterBand(1);
+	unsigned char* _refBand = new unsigned char[ref_Xsize * ref_Ysize];
+	refBand->RasterIO(GF_Read, 0, 0, ref_Xsize, ref_Ysize, _refBand, ref_Xsize, ref_Ysize, ref_type, 0, 0);
 
-	for (int i = 0; i < Height; i++) {
-		for (int j = 0; j < Width; j++) {
-			if (i == 0 || j == 0 || i == Height- 1 || j == Width - 1) {
-				Output[Width * i + j] = Input[Width * i + j];
+	GDALRasterBand* resBand = res_Dataset->GetRasterBand(1);
+	int* _resBand = new int[res_Xsize * res_Ysize];
+	resBand->RasterIO(GF_Read, 0, 0, res_Xsize, res_Ysize, _resBand, res_Xsize, res_Ysize, res_type, 0, 0);
+
+
+	int N11 = 0; int N12 = 0; int N13 = 0; int N14 = 0; int N15 = 0;
+	int N21 = 0; int N22 = 0; int N23 = 0; int N24 = 0; int N25 = 0;
+	int N31 = 0; int N32 = 0; int N33 = 0; int N34 = 0; int N35 = 0;
+	int N41 = 0; int N42 = 0; int N43 = 0; int N44 = 0; int N45 = 0;
+	int N51 = 0; int N52 = 0; int N53 = 0; int N54 = 0; int N55 = 0;
+
+	for (int i = 0; i < ref_Xsize * ref_Ysize; i++)
+	{
+		if ((int)_refBand[i] == 0)
+		{
+			if (_resBand[i] == 0)
+			{
+				N11 += 1;
+			}
+			else if (_resBand[i] == 50)
+			{
+				N12 += 1;
+			}
+			else if (_resBand[i] == 100)
+			{
+				N13 += 1;
+			}
+			else if (_resBand[i] == 150)
+			{
+				N14 += 1;
+			}
+			else
+			{
+				N15 += 1;
 			}
 		}
-	}
-	int temp[9] = { 0 };//3*3的
-	for (int i = 1; i < Height - 1; i++) {
-		for (int j = 1; j < Width - 1; j++) {
-			for (int k = 0; k < 9; k++) {
-				*(temp + k) = Input[Width * (i + (k / 3 - 1)) + j + k % 3 - 1];
+		else if ((int)_refBand[i] == 50)
+		{
+			if (_resBand[i] == 0)
+			{
+				N21 += 1;
 			}
-			sort(temp, temp + 9);
-			Output[Width * i + j] = (int)*(temp + 4);
+			else if (_resBand[i] == 50)
+			{
+				N22 += 1;
+			}
+			else if (_resBand[i] == 100)
+			{
+				N23 += 1;
+			}
+			else if (_resBand[i] == 150)
+			{
+				N24 += 1;
+			}
+			else
+			{
+				N25 += 1;
+			}
 		}
+		else if ((int)_refBand[i] == 100)
+		{
+			if (_resBand[i] == 0)
+			{
+				N31 += 1;
+			}
+			else if (_resBand[i] == 50)
+			{
+				N32 += 1;
+			}
+			else if (_resBand[i] == 100)
+			{
+				N33 += 1;
+			}
+			else if (_resBand[i] == 150)
+			{
+				N34 += 1;
+			}
+			else
+			{
+				N35 += 1;
+			}
+		}
+		else if ((int)_refBand[i] == 150)
+		{
+			if (_resBand[i] == 0)
+			{
+				N41 += 1;
+			}
+			else if (_resBand[i] == 50)
+			{
+				N42 += 1;
+			}
+			else if (_resBand[i] == 100)
+			{
+				N43 += 1;
+			}
+			else if (_resBand[i] == 150)
+			{
+				N44 += 1;
+			}
+			else
+			{
+				N45 += 1;
+			}
+		}
+		else
+		{
+			if (_resBand[i] == 0)
+			{
+				N51 += 1;
+			}
+			else if (_resBand[i] == 50)
+			{
+				N52 += 1;
+			}
+			else if (_resBand[i] == 100)
+			{
+				N53 += 1;
+			}
+			else if (_resBand[i] == 150)
+			{
+				N54 += 1;
+			}
+			else
+			{
+				N55 += 1;
+			}
+		}
+
 	}
 
-	return Output;
+	// 计算正确率
+	double c1 = (double)N11 / (N11 + N12 + N13 + N14 + N15);
+	double c2 = (double)N22 / (N21 + N22 + N23 + N24 + N25);
+	double c3 = (double)N33 / (N31 + N32 + N33 + N34 + N35);
+	double c4 = (double)N44 / (N41 + N42 + N43 + N44 + N45);
+	double c5 = (double)N55 / (N51 + N52 + N53 + N54 + N55);
+	double c = (c1 + c2 + c3 + c4 + c5) / 5;
+	cout << "第1类正确率为：" << c1 << endl;
+	cout << "第2类正确率为：" << c2 << endl;
+	cout << "第3类正确率为：" << c3 << endl;
+	cout << "第4类正确率为：" << c4 << endl;
+	cout << "第5类正确率为：" << c5 << endl;
+	cout << "正确率均值：" << c << endl;
+
+
+	//混淆矩阵
+	//int A_refChange = N11 + N21;
+	//int B_refNoChange = N12 + N22;
+	//int C_resChange = N11 + N12;
+	//int D_resNoChange = N21 + N22;
+	//int n1 = A_refChange + B_refNoChange;
+	//int n2 = C_resChange + D_resNoChange;
+	//int T_Count = N11 + N12 + N21 + N22;
+
+	//计算漏检率、虚警率、总分类精度、Kappa系数
+	//double p1 = (double)N21 / A_refChange;
+	//double p2 = (double)N12 / C_resChange;
+	//double p = (double)(N11 + N22) / T_Count;
+	//double kappa = (double)(T_Count * (N11 + N22) - (A_refChange * C_resChange + B_refNoChange * D_resNoChange)) /
+	//	(T_Count * T_Count - (A_refChange * C_resChange + B_refNoChange * D_resNoChange));
+
+	std::cout << "精度评定完成，结果保存于data目录下" << std::endl;
+
+	std::fstream f;
+	f.open(".\\data\\EvaResult.txt", std::ios::out);
+	//写入的内容
+	//f << "漏检率：" << p1 * 100 << "%" << '\n'
+	//	<< "虚警率：" << p2 * 100 << "%" << '\n'
+	//	<< "总分类精度：" << p * 100 << "%" << '\n'
+	//	<< "Kappa系数：" << kappa << '\n';
+
 }
 
-void saveResult(Data& Img, int *predictLabels, const char* resultPath) 
+// 输出图像
+void saveResult(Data& Img, int* predictLabels, const char* resultPath)
 {
 
 	//获取驱动
@@ -414,4 +521,33 @@ void saveResult(Data& Img, int *predictLabels, const char* resultPath)
 	GDALClose(imgDstDS);
 }
 
+// 最大似然法分类
+int maxLikelihoodClassify(vector<double> probbly, vector<Pixel> means, vector<Pixel> Var, int trainLabels[], int numTrain, Pixel testPix)
+{
+	int maxId = 0;
+	double maxProb = 0;
 
+
+	for (int i = 0; i < numTrain; i++)
+	{
+
+		double mean_r = means[i].r;
+		double mean_g = means[i].g;
+		double mean_b = means[i].b;
+		double var_r = Var[i].r;
+		double var_g = Var[i].g;
+		double var_b = Var[i].b;
+
+		double prob_r = gaussProDen(mean_r, var_r, testPix.r);
+		double prob_g = gaussProDen(mean_g, var_g, testPix.g);
+		double prob_b = gaussProDen(mean_b, var_b, testPix.b);
+		double prob = prob_r * prob_g * prob_b * probbly[i];
+		if (prob > maxProb)
+		{
+			maxProb = prob;
+			maxId = trainLabels[i];
+		}
+
+	}
+	return maxId;
+}
