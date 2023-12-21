@@ -1,0 +1,71 @@
+﻿  Data.cpp
+D:\Dev_Lib\gdal\include\ogr_featurestyle.h(89,15): warning C4251: “OGRStyleTable::osLastRequestedStyleName”: class“CPLStringT<void>”需要有 dll 接口由 class“OGRStyleTable”的客户端使用
+D:\Dev_Lib\gdal\include\cpl_string.h(323): message : 参见“CPLStringT<void>”的声明
+D:\Dev_Lib\gdal\include\cpl_json.h(153,17): warning C4251: “CPLJSONObject::m_osKey”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“CPLJSONObject”的客户端使用
+D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\xstring(4871): message : 参见“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”的声明
+D:\Dev_Lib\gdal\include\ogr_geometry.h(947,42): warning C4251: “OGRCurve::ConstIterator::m_poPrivate”: class“std::unique_ptr<OGRCurve::ConstIterator::Private,std::default_delete<OGRCurve::ConstIterator::Private>>”需要有 dll 接口由 class“OGRCurve::ConstIterator”的客户端使用
+D:\Dev_Lib\gdal\include\ogr_geometry.h(947): message : 参见“std::unique_ptr<OGRCurve::ConstIterator::Private,std::default_delete<OGRCurve::ConstIterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\ogr_geometry.h(1066,42): warning C4251: “OGRSimpleCurve::Iterator::m_poPrivate”: class“std::unique_ptr<OGRSimpleCurve::Iterator::Private,std::default_delete<OGRSimpleCurve::Iterator::Private>>”需要有 dll 接口由 class“OGRSimpleCurve::Iterator”的客户端使用
+D:\Dev_Lib\gdal\include\ogr_geometry.h(1066): message : 参见“std::unique_ptr<OGRSimpleCurve::Iterator::Private,std::default_delete<OGRSimpleCurve::Iterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\ogr_geometry.h(1083,42): warning C4251: “OGRSimpleCurve::ConstIterator::m_poPrivate”: class“std::unique_ptr<OGRSimpleCurve::ConstIterator::Private,std::default_delete<OGRSimpleCurve::ConstIterator::Private>>”需要有 dll 接口由 class“OGRSimpleCurve::ConstIterator”的客户端使用
+D:\Dev_Lib\gdal\include\ogr_geometry.h(1083): message : 参见“std::unique_ptr<OGRSimpleCurve::ConstIterator::Private,std::default_delete<OGRSimpleCurve::ConstIterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\ogr_feature.h(384,34): warning C4251: “OGRFeature::FieldValue::m_poPrivate”: class“std::unique_ptr<OGRFeature::FieldValue::Private,std::default_delete<OGRFeature::FieldValue::Private>>”需要有 dll 接口由 class“OGRFeature::FieldValue”的客户端使用
+D:\Dev_Lib\gdal\include\ogr_feature.h(384): message : 参见“std::unique_ptr<OGRFeature::FieldValue::Private,std::default_delete<OGRFeature::FieldValue::Private>>”的声明
+D:\Dev_Lib\gdal\include\ogr_feature.h(527,34): warning C4251: “OGRFeature::ConstFieldIterator::m_poPrivate”: class“std::unique_ptr<OGRFeature::ConstFieldIterator::Private,std::default_delete<OGRFeature::ConstFieldIterator::Private>>”需要有 dll 接口由 class“OGRFeature::ConstFieldIterator”的客户端使用
+D:\Dev_Lib\gdal\include\ogr_feature.h(527): message : 参见“std::unique_ptr<OGRFeature::ConstFieldIterator::Private,std::default_delete<OGRFeature::ConstFieldIterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(137,25): warning C4251: “GDALMajorObject::sDescription”: class“CPLStringT<void>”需要有 dll 接口由 class“GDALMajorObject”的客户端使用
+D:\Dev_Lib\gdal\include\cpl_string.h(323): message : 参见“CPLStringT<void>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(190,17): warning C4251: “GDALDefaultOverviews::osOvrFilename”: class“CPLStringT<void>”需要有 dll 接口由 class“GDALDefaultOverviews”的客户端使用
+D:\Dev_Lib\gdal\include\cpl_string.h(323): message : 参见“CPLStringT<void>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(483,42): warning C4251: “GDALDataset::Bands::Iterator::m_poPrivate”: class“std::unique_ptr<GDALDataset::Bands::Iterator::Private,std::default_delete<GDALDataset::Bands::Iterator::Private>>”需要有 dll 接口由 class“GDALDataset::Bands::Iterator”的客户端使用
+D:\Dev_Lib\gdal\include\gdal_priv.h(483): message : 参见“std::unique_ptr<GDALDataset::Bands::Iterator::Private,std::default_delete<GDALDataset::Bands::Iterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(670,42): warning C4251: “GDALDataset::Layers::Iterator::m_poPrivate”: class“std::unique_ptr<GDALDataset::Layers::Iterator::Private,std::default_delete<GDALDataset::Layers::Iterator::Private>>”需要有 dll 接口由 class“GDALDataset::Layers::Iterator”的客户端使用
+D:\Dev_Lib\gdal\include\gdal_priv.h(670): message : 参见“std::unique_ptr<GDALDataset::Layers::Iterator::Private,std::default_delete<GDALDataset::Layers::Iterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(728,42): warning C4251: “GDALDataset::Features::Iterator::m_poPrivate”: class“std::unique_ptr<GDALDataset::Features::Iterator::Private,std::default_delete<GDALDataset::Features::Iterator::Private>>”需要有 dll 接口由 class“GDALDataset::Features::Iterator”的客户端使用
+D:\Dev_Lib\gdal\include\gdal_priv.h(728): message : 参见“std::unique_ptr<GDALDataset::Features::Iterator::Private,std::default_delete<GDALDataset::Features::Iterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(953,33): warning C4251: “GDALColorTable::aoEntries”: class“std::vector<GDALColorEntry,std::allocator<GDALColorEntry>>”需要有 dll 接口由 class“GDALColorTable”的客户端使用
+D:\Dev_Lib\gdal\include\gdal_priv.h(953): message : 参见“std::vector<GDALColorEntry,std::allocator<GDALColorEntry>>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(1513,38): warning C4251: “GDALDriverManager::oMapNameToDrivers”: class“std::map<CPLString,GDALDriver *,std::less<CPLString>,std::allocator<std::pair<const CPLString,GDALDriver *>>>”需要有 dll 接口由 class“GDALDriverManager”的客户端使用
+D:\Dev_Lib\gdal\include\gdal_priv.h(1513): message : 参见“std::map<CPLString,GDALDriver *,std::less<CPLString>,std::allocator<std::pair<const CPLString,GDALDriver *>>>”的声明
+D:\Dev_Lib\eigen-3.4.0\Eigen\src\Core\arch\Default\Half.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+D:\Dev_Lib\eigen-3.4.0\Eigen\src\Core\arch\Default\BFloat16.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+D:\Dev_Lib\eigen-3.4.0\Eigen\src\Core\arch\Default\GenericPacketMathFunctions.h(676,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+D:\Documents\GdalFile\GDALProject9\Data.cpp(222,8): warning C4244: “初始化”: 从“Eigen::EigenBase<Derived>::Index”转换到“int”，可能丢失数据
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  GDALProject9.cpp
+D:\Dev_Lib\gdal\include\ogr_featurestyle.h(89,15): warning C4251: “OGRStyleTable::osLastRequestedStyleName”: class“CPLStringT<void>”需要有 dll 接口由 class“OGRStyleTable”的客户端使用
+D:\Dev_Lib\gdal\include\cpl_string.h(323): message : 参见“CPLStringT<void>”的声明
+D:\Dev_Lib\gdal\include\cpl_json.h(153,17): warning C4251: “CPLJSONObject::m_osKey”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“CPLJSONObject”的客户端使用
+D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\xstring(4871): message : 参见“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”的声明
+D:\Dev_Lib\gdal\include\ogr_geometry.h(947,42): warning C4251: “OGRCurve::ConstIterator::m_poPrivate”: class“std::unique_ptr<OGRCurve::ConstIterator::Private,std::default_delete<OGRCurve::ConstIterator::Private>>”需要有 dll 接口由 class“OGRCurve::ConstIterator”的客户端使用
+D:\Dev_Lib\gdal\include\ogr_geometry.h(947): message : 参见“std::unique_ptr<OGRCurve::ConstIterator::Private,std::default_delete<OGRCurve::ConstIterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\ogr_geometry.h(1066,42): warning C4251: “OGRSimpleCurve::Iterator::m_poPrivate”: class“std::unique_ptr<OGRSimpleCurve::Iterator::Private,std::default_delete<OGRSimpleCurve::Iterator::Private>>”需要有 dll 接口由 class“OGRSimpleCurve::Iterator”的客户端使用
+D:\Dev_Lib\gdal\include\ogr_geometry.h(1066): message : 参见“std::unique_ptr<OGRSimpleCurve::Iterator::Private,std::default_delete<OGRSimpleCurve::Iterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\ogr_geometry.h(1083,42): warning C4251: “OGRSimpleCurve::ConstIterator::m_poPrivate”: class“std::unique_ptr<OGRSimpleCurve::ConstIterator::Private,std::default_delete<OGRSimpleCurve::ConstIterator::Private>>”需要有 dll 接口由 class“OGRSimpleCurve::ConstIterator”的客户端使用
+D:\Dev_Lib\gdal\include\ogr_geometry.h(1083): message : 参见“std::unique_ptr<OGRSimpleCurve::ConstIterator::Private,std::default_delete<OGRSimpleCurve::ConstIterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\ogr_feature.h(384,34): warning C4251: “OGRFeature::FieldValue::m_poPrivate”: class“std::unique_ptr<OGRFeature::FieldValue::Private,std::default_delete<OGRFeature::FieldValue::Private>>”需要有 dll 接口由 class“OGRFeature::FieldValue”的客户端使用
+D:\Dev_Lib\gdal\include\ogr_feature.h(384): message : 参见“std::unique_ptr<OGRFeature::FieldValue::Private,std::default_delete<OGRFeature::FieldValue::Private>>”的声明
+D:\Dev_Lib\gdal\include\ogr_feature.h(527,34): warning C4251: “OGRFeature::ConstFieldIterator::m_poPrivate”: class“std::unique_ptr<OGRFeature::ConstFieldIterator::Private,std::default_delete<OGRFeature::ConstFieldIterator::Private>>”需要有 dll 接口由 class“OGRFeature::ConstFieldIterator”的客户端使用
+D:\Dev_Lib\gdal\include\ogr_feature.h(527): message : 参见“std::unique_ptr<OGRFeature::ConstFieldIterator::Private,std::default_delete<OGRFeature::ConstFieldIterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(137,25): warning C4251: “GDALMajorObject::sDescription”: class“CPLStringT<void>”需要有 dll 接口由 class“GDALMajorObject”的客户端使用
+D:\Dev_Lib\gdal\include\cpl_string.h(323): message : 参见“CPLStringT<void>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(190,17): warning C4251: “GDALDefaultOverviews::osOvrFilename”: class“CPLStringT<void>”需要有 dll 接口由 class“GDALDefaultOverviews”的客户端使用
+D:\Dev_Lib\gdal\include\cpl_string.h(323): message : 参见“CPLStringT<void>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(483,42): warning C4251: “GDALDataset::Bands::Iterator::m_poPrivate”: class“std::unique_ptr<GDALDataset::Bands::Iterator::Private,std::default_delete<GDALDataset::Bands::Iterator::Private>>”需要有 dll 接口由 class“GDALDataset::Bands::Iterator”的客户端使用
+D:\Dev_Lib\gdal\include\gdal_priv.h(483): message : 参见“std::unique_ptr<GDALDataset::Bands::Iterator::Private,std::default_delete<GDALDataset::Bands::Iterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(670,42): warning C4251: “GDALDataset::Layers::Iterator::m_poPrivate”: class“std::unique_ptr<GDALDataset::Layers::Iterator::Private,std::default_delete<GDALDataset::Layers::Iterator::Private>>”需要有 dll 接口由 class“GDALDataset::Layers::Iterator”的客户端使用
+D:\Dev_Lib\gdal\include\gdal_priv.h(670): message : 参见“std::unique_ptr<GDALDataset::Layers::Iterator::Private,std::default_delete<GDALDataset::Layers::Iterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(728,42): warning C4251: “GDALDataset::Features::Iterator::m_poPrivate”: class“std::unique_ptr<GDALDataset::Features::Iterator::Private,std::default_delete<GDALDataset::Features::Iterator::Private>>”需要有 dll 接口由 class“GDALDataset::Features::Iterator”的客户端使用
+D:\Dev_Lib\gdal\include\gdal_priv.h(728): message : 参见“std::unique_ptr<GDALDataset::Features::Iterator::Private,std::default_delete<GDALDataset::Features::Iterator::Private>>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(953,33): warning C4251: “GDALColorTable::aoEntries”: class“std::vector<GDALColorEntry,std::allocator<GDALColorEntry>>”需要有 dll 接口由 class“GDALColorTable”的客户端使用
+D:\Dev_Lib\gdal\include\gdal_priv.h(953): message : 参见“std::vector<GDALColorEntry,std::allocator<GDALColorEntry>>”的声明
+D:\Dev_Lib\gdal\include\gdal_priv.h(1513,38): warning C4251: “GDALDriverManager::oMapNameToDrivers”: class“std::map<CPLString,GDALDriver *,std::less<CPLString>,std::allocator<std::pair<const CPLString,GDALDriver *>>>”需要有 dll 接口由 class“GDALDriverManager”的客户端使用
+D:\Dev_Lib\gdal\include\gdal_priv.h(1513): message : 参见“std::map<CPLString,GDALDriver *,std::less<CPLString>,std::allocator<std::pair<const CPLString,GDALDriver *>>>”的声明
+D:\Dev_Lib\eigen-3.4.0\Eigen\src\Core\arch\Default\Half.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+D:\Dev_Lib\eigen-3.4.0\Eigen\src\Core\arch\Default\BFloat16.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+D:\Dev_Lib\eigen-3.4.0\Eigen\src\Core\arch\Default\GenericPacketMathFunctions.h(676,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  正在生成代码...
+  GDALProject9.vcxproj -> D:\Documents\GdalFile\GDALProject1\x64\Debug\GDALProject9.exe
