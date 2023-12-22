@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Data.h"
 
-// Í¼ÏñµÄ¿í¶ÈºÍ¸ß¶È
+// å›¾åƒçš„å®½åº¦å’Œé«˜åº¦
 const int Width = 500;
 const int Height = 1000;
 
@@ -37,18 +37,18 @@ GDALDataType Data::getDatatype()
 }
 Data::~Data() {};
 
-// ¼ÆËãÁ½¸öÏòÁ¿¾àÀë
+// è®¡ç®—ä¸¤ä¸ªå‘é‡è·ç¦»
 double caldistance(Pixel a, Pixel b)
 {
 	return sqrt(pow(a.r - b.r, 2) + pow(a.g - b.g, 2) + pow(a.b - b.b, 2));
 }
-// ¶ÁÈ¡Í¼ÏñÊı¾İ
+// è¯»å–å›¾åƒæ•°æ®
 vector<Pixel> loadImage(Data& Img)
 {
 	using namespace std;
 	vector<Pixel> pl;
 	GDALDataType ImgType = Img.getDatatype();
-	// Ñù±¾Êı¾İ
+	// æ ·æœ¬æ•°æ®
 	GDALDataset* imgDataSet = Img.getDataset();
 	unsigned char* PixelRed = new unsigned char[Width * Height];
 	unsigned char* PixelGreen = new unsigned char[Width * Height];
@@ -82,10 +82,10 @@ vector<Pixel> loadImage(Data& Img)
 	return pl;
 }
 
-// Ñù±¾¾ùÖµ1¡¢Ñù±¾¾ùÖµ2¡¢Ğ­·½²î¡¢ÏÈÑé¸ÅÂÊ
+// æ ·æœ¬å‡å€¼1ã€æ ·æœ¬å‡å€¼2ã€åæ–¹å·®ã€å…ˆéªŒæ¦‚ç‡
 tuple<vector<Pixel>, vector<Vector3d>,vector<Matrix3d>, vector<double> > getMeans(vector<Pixel> train, vector<Pixel> Label)
 {
-	// ¾ùÖµ1¡¢ÒÔ½á¹¹Ìå´æ´¢¾ùÖµ£¬ÓÃÓÚ×îĞ¡¾àÀë·¨
+	// å‡å€¼1ã€ä»¥ç»“æ„ä½“å­˜å‚¨å‡å€¼ï¼Œç”¨äºæœ€å°è·ç¦»æ³•
 	vector<Pixel> meanPixels(5);
 	int k0 = 0; int k1 = 0; int k2 = 0; int k3 = 0; int k4 = 0;
 	MatrixXd ccvv0(Height*Width, 3);
@@ -180,7 +180,7 @@ tuple<vector<Pixel>, vector<Vector3d>,vector<Matrix3d>, vector<double> > getMean
 	//	}
 	//}
 
-	// ÏÈÑé¸ÅÂÊ
+	// å…ˆéªŒæ¦‚ç‡
 	vector<double> probability(5);
 	probability[0] = (double)k0 / train.size();
 	probability[1] = (double)k1 / train.size();
@@ -194,7 +194,7 @@ tuple<vector<Pixel>, vector<Vector3d>,vector<Matrix3d>, vector<double> > getMean
 	//meanPixels[3].r = sumR150 / k3; meanPixels[3].g = sumG150 / k3;	meanPixels[3].b = sumB150 / k3;
 	//meanPixels[4].r = sumR200 / k4;  meanPixels[4].g = sumG200 / k4; meanPixels[4].b = sumB200 / k4;
 
-	// ¾ùÖµ2¡¢ÒÔÏòÁ¿´æ´¢¾ùÖµ£¬ÓÃÓÚ×î´óËÆÈ»·¨
+	// å‡å€¼2ã€ä»¥å‘é‡å­˜å‚¨å‡å€¼ï¼Œç”¨äºæœ€å¤§ä¼¼ç„¶æ³•
 	vector<Vector3d> means;
 	MatrixXd a0 = ccvv0.colwise().mean();
 	a0.resize(a0.rows(), a0.cols());
@@ -230,13 +230,13 @@ tuple<vector<Pixel>, vector<Vector3d>,vector<Matrix3d>, vector<double> > getMean
 	MatrixXd cov_3(ccvv3.rows(), 3);
 	MatrixXd cov_4(ccvv4.rows(), 3);
 
-	//1 Çó¸÷¸öÎ¬¶È¾ùÖµ
+	//1 æ±‚å„ä¸ªç»´åº¦å‡å€¼
 	//MatrixXd mean_0 = ccvv0.colwise().mean();
 	//MatrixXd mean_1 = ccvv0.colwise().mean();
 	//MatrixXd mean_2 = ccvv0.colwise().mean();
 	//MatrixXd mean_3 = ccvv0.colwise().mean();
 
-	//2 Ã¿¸öÑù±¾¼õÈ¥¾ùÖµ
+	//2 æ¯ä¸ªæ ·æœ¬å‡å»å‡å€¼
 	for (int i = 0; i < ccvv0.rows(); i++)
 	{
 		cov_0.row(i) = ccvv0.row(i) - a0;
@@ -257,7 +257,7 @@ tuple<vector<Pixel>, vector<Vector3d>,vector<Matrix3d>, vector<double> > getMean
 	{
 		cov_4.row(i) = ccvv4.row(i) - a4;
 	}
-	//3 ¼ÆËã
+	//3 è®¡ç®—
 	cov_0 = cov_0.transpose() * cov_0 / (cov_0.rows() - 1);
 	cov_1 = cov_1.transpose() * cov_1 / (cov_1.rows() - 1);
 	cov_2 = cov_2.transpose() * cov_2 / (cov_2.rows() - 1);
@@ -337,30 +337,30 @@ tuple<vector<Pixel>, vector<Vector3d>,vector<Matrix3d>, vector<double> > getMean
 	//Cov[3] = getCovMat(cov3);
 	//Cov[4] = getCovMat(cov4);
 
-	// vector´Ó0µ½4·Ö±ğ¶ÔÓ¦0¡¢50¡¢100¡¢150¡¢200
+	// vectorä»0åˆ°4åˆ†åˆ«å¯¹åº”0ã€50ã€100ã€150ã€200
 	return make_tuple(meanPixels, means, Cov, probability);
 }
 
-// Ğ­·½²î¾ØÕó¼ÆËã
+// åæ–¹å·®çŸ©é˜µè®¡ç®—
 //Matrix3d getCovMat(MatrixXd samples)
 //{
 //	MatrixXd cov_;
 //
-//	//1 Çó¸÷¸öÎ¬¶È¾ùÖµ
+//	//1 æ±‚å„ä¸ªç»´åº¦å‡å€¼
 //	MatrixXd mean_ = samples.colwise().mean();
 //
-//	//2 Ã¿¸öÑù±¾¼õÈ¥¾ùÖµ
+//	//2 æ¯ä¸ªæ ·æœ¬å‡å»å‡å€¼
 //	for (size_t i = 0; i < samples.rows(); i++)
 //	{
 //		cov_.row(i) = samples.row(i) - mean_;
 //	}
-//	//3 ¼ÆËã
+//	//3 è®¡ç®—
 //	cov_ = cov_.transpose() * cov_ / (cov_.rows() - 1);
 //
 //	return cov_;
 //}
 
-// ¸ßË¹¸ÅÂÊÃÜ¶È¼ÆËã
+// é«˜æ–¯æ¦‚ç‡å¯†åº¦è®¡ç®—
 double gaussProDen(double means, double var, double x)
 {
 	double temp1 = -1 * (x - means) * (x - means) / (2 * var);
@@ -369,7 +369,7 @@ double gaussProDen(double means, double var, double x)
 	return temp2 * exp(temp1);
 }
 
-// ¶àÔª¸ßË¹¸ÅÂÊÃÜ¶È¼ÆËã
+// å¤šå…ƒé«˜æ–¯æ¦‚ç‡å¯†åº¦è®¡ç®—
 double testgauss(VectorXd mean, MatrixXd cov, VectorXd test)
 {
 	int k = mean.size();
@@ -382,7 +382,7 @@ double testgauss(VectorXd mean, MatrixXd cov, VectorXd test)
 	return normalization * exp(exponent);
 }
 
-// ÏñËØµ½ÏòÁ¿µÄ×ª»»
+// åƒç´ åˆ°å‘é‡çš„è½¬æ¢
 Vector3d Pix2Vec(Pixel a)
 {
 	VectorXd V(3);
@@ -390,7 +390,7 @@ Vector3d Pix2Vec(Pixel a)
 	return V;
 }
 
-// ×î´óËÆÈ»·¨²âÊÔ
+// æœ€å¤§ä¼¼ç„¶æ³•æµ‹è¯•
 int testMax(vector<double> probbly, vector<Vector3d> means, vector<Matrix3d> cov, int trainLabels[], int numTrain, Pixel testPix)
 {
 	Vector3d tePix = Pix2Vec(testPix);
@@ -410,7 +410,7 @@ int testMax(vector<double> probbly, vector<Vector3d> means, vector<Matrix3d> cov
 	return maxId;
 }
 
-// ×îĞ¡¾àÀë·ÖÀà
+// æœ€å°è·ç¦»åˆ†ç±»
 int minDistClassify(vector<Pixel> meanPix, int trainLabels[], int numTrain, Pixel testPix)
 {
 	double minDist = INT_MAX;
@@ -418,7 +418,7 @@ int minDistClassify(vector<Pixel> meanPix, int trainLabels[], int numTrain, Pixe
 
 	for (int i = 0; i < numTrain; ++i)
 	{
-		// ÕâÀïÓ¦¸ÃÊÇÓë¸÷¸ö¾ùÖµÖĞĞÄÖ®¼äµÄ¾àÀë
+		// è¿™é‡Œåº”è¯¥æ˜¯ä¸å„ä¸ªå‡å€¼ä¸­å¿ƒä¹‹é—´çš„è·ç¦»
 		double dist = caldistance(testPix, meanPix[i]);
 
 		if (dist < minDist)
@@ -427,15 +427,15 @@ int minDistClassify(vector<Pixel> meanPix, int trainLabels[], int numTrain, Pixe
 			predLabel = trainLabels[i];
 		}
 	}
-	// Ô¤²âÀà±ğ
+	// é¢„æµ‹ç±»åˆ«
 	return predLabel;
 }
 
-//¾«¶ÈÆÀ¶¨
+//ç²¾åº¦è¯„å®š
 void EvaAccuracy(Data& ref, Data& res)
 {
 	//reference
-	GDALDataType ref_type = ref.getDatatype(); //GDT_UInt16 ¶ÔÓ¦ unsigned short
+	GDALDataType ref_type = ref.getDatatype(); //GDT_UInt16 å¯¹åº” unsigned short
 	GDALDataset* ref_Dataset = ref.getDataset();
 	int ref_Xsize = ref.getXsize();
 	int ref_Ysize = ref.getYsize();
@@ -582,22 +582,22 @@ void EvaAccuracy(Data& ref, Data& res)
 
 	}
 
-	// ¼ÆËãÕıÈ·ÂÊ
+	// è®¡ç®—æ­£ç¡®ç‡
 	double c1 = (double)N11 / (N11 + N12 + N13 + N14 + N15);
 	double c2 = (double)N22 / (N21 + N22 + N23 + N24 + N25);
 	double c3 = (double)N33 / (N31 + N32 + N33 + N34 + N35);
 	double c4 = (double)N44 / (N41 + N42 + N43 + N44 + N45);
 	double c5 = (double)N55 / (N51 + N52 + N53 + N54 + N55);
 	double c = (c1 + c2 + c3 + c4 + c5) / 5;
-	cout << "µÚ1ÀàÕıÈ·ÂÊÎª£º" << c1 << endl;
-	cout << "µÚ2ÀàÕıÈ·ÂÊÎª£º" << c2 << endl;
-	cout << "µÚ3ÀàÕıÈ·ÂÊÎª£º" << c3 << endl;
-	cout << "µÚ4ÀàÕıÈ·ÂÊÎª£º" << c4 << endl;
-	cout << "µÚ5ÀàÕıÈ·ÂÊÎª£º" << c5 << endl;
-	cout << "ÕıÈ·ÂÊ¾ùÖµ£º" << c << endl;
+	cout << "ç¬¬1ç±»æ­£ç¡®ç‡ä¸ºï¼š" << c1 << endl;
+	cout << "ç¬¬2ç±»æ­£ç¡®ç‡ä¸ºï¼š" << c2 << endl;
+	cout << "ç¬¬3ç±»æ­£ç¡®ç‡ä¸ºï¼š" << c3 << endl;
+	cout << "ç¬¬4ç±»æ­£ç¡®ç‡ä¸ºï¼š" << c4 << endl;
+	cout << "ç¬¬5ç±»æ­£ç¡®ç‡ä¸ºï¼š" << c5 << endl;
+	cout << "æ­£ç¡®ç‡å‡å€¼ï¼š" << c << endl;
 
 
-	//»ìÏı¾ØÕó
+	//æ··æ·†çŸ©é˜µ
 	//int A_refChange = N11 + N21;
 	//int B_refNoChange = N12 + N22;
 	//int C_resChange = N11 + N12;
@@ -606,57 +606,57 @@ void EvaAccuracy(Data& ref, Data& res)
 	//int n2 = C_resChange + D_resNoChange;
 	//int T_Count = N11 + N12 + N21 + N22;
 
-	//¼ÆËãÂ©¼ìÂÊ¡¢Ğé¾¯ÂÊ¡¢×Ü·ÖÀà¾«¶È¡¢KappaÏµÊı
+	//è®¡ç®—æ¼æ£€ç‡ã€è™šè­¦ç‡ã€æ€»åˆ†ç±»ç²¾åº¦ã€Kappaç³»æ•°
 	//double p1 = (double)N21 / A_refChange;
 	//double p2 = (double)N12 / C_resChange;
 	//double p = (double)(N11 + N22) / T_Count;
 	//double kappa = (double)(T_Count * (N11 + N22) - (A_refChange * C_resChange + B_refNoChange * D_resNoChange)) /
 	//	(T_Count * T_Count - (A_refChange * C_resChange + B_refNoChange * D_resNoChange));
 
-	std::cout << "¾«¶ÈÆÀ¶¨Íê³É£¬½á¹û±£´æÓÚdataÄ¿Â¼ÏÂ" << std::endl;
+	std::cout << "ç²¾åº¦è¯„å®šå®Œæˆï¼Œç»“æœä¿å­˜äºdataç›®å½•ä¸‹" << std::endl;
 
 	std::fstream f;
 	f.open(".\\data\\EvaResult.txt", std::ios::out);
-	//Ğ´ÈëµÄÄÚÈİ
-	//f << "Â©¼ìÂÊ£º" << p1 * 100 << "%" << '\n'
-	//	<< "Ğé¾¯ÂÊ£º" << p2 * 100 << "%" << '\n'
-	//	<< "×Ü·ÖÀà¾«¶È£º" << p * 100 << "%" << '\n'
-	//	<< "KappaÏµÊı£º" << kappa << '\n';
+	//å†™å…¥çš„å†…å®¹
+	//f << "æ¼æ£€ç‡ï¼š" << p1 * 100 << "%" << '\n'
+	//	<< "è™šè­¦ç‡ï¼š" << p2 * 100 << "%" << '\n'
+	//	<< "æ€»åˆ†ç±»ç²¾åº¦ï¼š" << p * 100 << "%" << '\n'
+	//	<< "Kappaç³»æ•°ï¼š" << kappa << '\n';
 
 }
 
-// Êä³öÍ¼Ïñ
+// è¾“å‡ºå›¾åƒ
 void saveResult(Data& Img, int* predictLabels, const char* resultPath)
 {
 
-	//»ñÈ¡Çı¶¯
+	//è·å–é©±åŠ¨
 	GDALDriver* Driver = GetGDALDriverManager()->GetDriverByName("GTiff");
-	//¶¨Òå²¨¶ÎÅÅÁĞË³Ğò
+	//å®šä¹‰æ³¢æ®µæ’åˆ—é¡ºåº
 	int Bandmap[1] = { 1 };
 
 	int width = Img.getXsize();
 	int height = Img.getYsize();
 
-	//´´½¨±£´æÓ°ÏñµÄÊı¾İ¼¯
+	//åˆ›å»ºä¿å­˜å½±åƒçš„æ•°æ®é›†
 	char** papszOptions = nullptr;
 	papszOptions = CSLSetNameValue(papszOptions, "INTERLEAVE", "BAND");
 	GDALDataset* imgDstDS = Driver->Create(resultPath, width, height, 1, GDT_Int32, papszOptions);
-	//Èô´´½¨Ê§°Ü
+	//è‹¥åˆ›å»ºå¤±è´¥
 	if (!imgDstDS)
 	{
 		cout << "Create file failed!" << endl;
 	}
 	else
 	{
-		//Ğ´ÈëÍ¼Ïñ
+		//å†™å…¥å›¾åƒ
 		imgDstDS->RasterIO(GF_Write, 0, 0, width, height, predictLabels, width, height, GDT_Int32, 1, Bandmap, 0, 0, 0);
-		cout << "±£´æ³É¹¦£¬Çë²é¿´ÎÄ¼ş£¡" << endl;
+		cout << "ä¿å­˜æˆåŠŸï¼Œè¯·æŸ¥çœ‹æ–‡ä»¶ï¼" << endl;
 	}
 
 	GDALClose(imgDstDS);
 }
 
-// ×î´óËÆÈ»·¨·ÖÀà
+// æœ€å¤§ä¼¼ç„¶æ³•åˆ†ç±»
 int maxLikelihoodClassify(vector<double> probbly, vector<Pixel> means, vector<Pixel> Var, int trainLabels[], int numTrain, Pixel testPix)
 {
 	int maxId = 0;
